@@ -1,0 +1,40 @@
+{% extends 'books/base.html' %}
+{% load static %}
+
+{% block title %}Checkout | Pustakam{% endblock %}
+
+{% block content %}
+<div class="container section-padding">
+    <div class="auth-container"> <!-- Reuse auth container for centering -->
+        <div class="auth-card" style="max-width: 600px;">
+            <h2>Checkout</h2>
+            <div class="cart-preview mb-4">
+                <p><strong>Total Items:</strong> {{ cart.items.count }}</p>
+                <p><strong>Total Amount:</strong> <span class="price">₹{{ cart.total_price }}</span></p>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="full_name">Full Name</label>
+                    <input type="text" name="full_name" id="full_name" required value="{{ user.get_full_name }}">
+                </div>
+                <div class="form-group">
+                    <label for="address">Shipping Address</label>
+                    <textarea name="address" id="address" rows="4" required class="form-control"
+                        style="width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; padding: 0.5rem;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select class="form-control" style="width: 100%; padding: 0.5rem;">
+                        <option>Cash on Delivery</option>
+                        <option>Online Payment (Mock)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Place Order</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

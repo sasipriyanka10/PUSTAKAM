@@ -1,0 +1,106 @@
+{% extends 'books/base.html' %}
+{% load static %}
+
+{% block title %}{{ book.title }} | Pustakam{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'books/css/book_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container section-padding">
+    <div class="book-detail-grid">
+        <!-- Image Gallery -->
+        <div class="book-gallery">
+            <div class="main-image">
+                {% if book.image %}
+                <img src="{{ book.image.url }}" alt="{{ book.title }}">
+                {% else %}
+                <img src="https://via.placeholder.com/400x600?text=No+Image" alt="No Image">
+                {% endif %}
+            </div>
+            <!-- Thumbnails -->
+            <!-- Gallery Reverted for Stability -->
+        </div>
+
+        <!-- Details -->
+        <div class="book-info-col">
+            <h1 class="book-title">{{ book.title }}</h1>
+            <p class="book-author">by <a href="#">{{ book.author }}</a></p>
+
+            <div class="book-price-row">
+                <span class="price-large">₹{{ book.price }}</span>
+                <span class="condition-badge badge-{{ book.condition|lower }}">{{ book.condition }}</span>
+            </div>
+
+            <p class="book-description">{{ book.description }}</p>
+
+            <div class="book-actions">
+                <form action="{% url 'add_to_cart' book.id %}" method="get">
+                    <button type="submit" class="btn btn-primary btn-xl"><i class="fas fa-cart-plus"></i> Add to
+                        Cart</button>
+                </form>
+                <form action="{% url 'add_to_wishlist' book.id %}" method="get">
+                    <button type="submit" class="btn btn-outline btn-xl text-primary"><i class="far fa-heart"></i>
+                        Wishlist</button>
+                </form>
+            </div>
+
+            <div class="seller-info">
+                <p>Sold by: <strong>{{ book.seller.username }}</strong></p>
+                <!-- Rating placeholder -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews-section mt-5">
+        <h2 class="section-title">Customer Reviews</h2>
+
+        <div class="reviews-grid">
+            <div class="review-list">
+                {% for review in reviews %}
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="reviewer-name">{{ review.user.username }}</span>
+                        <div class="stars">
+                            {% for i in "12345"|make_list %}
+                            {% if forloop.counter <= review.rating %} <i class="fas fa-star text-warning"></i>
+                                {% else %}
+                                <i class="far fa-star text-warning"></i>
+                                {% endif %}
+                                {% endfor %}
+                        </div>
+                    </div>
+                    <p class="review-date">{{ review.created_at|date:"M d, Y" }}</p>
+                    <p class="review-text">{{ review.comment }}</p>
+                    {% if review.image %}
+                    <img src="{{ review.image.url }}" alt="Review Image" class="review-image">
+                    {% endif %}
+                </div>
+                {% empty %}
+                <p>No reviews yet. Be the first to review!</p>
+                {% endfor %}
+            </div>
+
+            <div class="add-review-form">
+                {% if user.is_authenticated %}
+                <h3>Write a Review</h3>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+                {% else %}
+                <p><a href="{% url 'login' %}">Login</a> to write a review.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

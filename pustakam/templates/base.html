@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pustakam | {% block title %}Reused Book Marketplace{% endblock %}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'books/css/common.css' %}">
+    {% block extra_css %}{% endblock %}
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="{% url 'home' %}" class="logo">
+                <i class="fas fa-book-open"></i> Pustakam
+            </a>
+
+            <div class="search-bar">
+                <form action="{% url 'home' %}" method="GET">
+                    <input type="text" placeholder="Search for books, authors..." name="q">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'wishlist' %}"><i class="fas fa-heart"></i></a></li>
+                <li><a href="{% url 'cart' %}"><i class="fas fa-shopping-cart"></i></a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Hi, {{ user.first_name }} <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'my_books' %}">My Uploads</a>
+                        <a href="{% url 'upload_book' %}">Sell Book</a>
+                        <a href="#">Orders</a> <!-- TODO -->
+                        <form action="{% url 'logout' %}" method="post" id="logout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="logout-btn">Logout</button>
+                        </form>
+                    </div>
+                </li>
+                {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn btn-primary">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Pustakam</h3>
+                    <p>Affordable knowledge for everyone. Buy and sell reused books securely.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'contact' %}">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Pustakam. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{% static 'books/js/animations.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

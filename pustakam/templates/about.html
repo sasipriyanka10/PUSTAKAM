@@ -1,0 +1,140 @@
+{% extends 'books/base.html' %}
+{% load static %}
+
+{% block title %}About Us | Pustakam{% endblock %}
+
+{% block content %}
+<div class="container section-padding">
+    <div class="about-hero text-center mb-5 animate-fade-up">
+        <h1 class="display-3 mb-3">Reimagining <span class="text-gradient">Reading</span></h1>
+        <p class="text-light" style="font-size: 1.3rem; max-width: 800px; margin: 0 auto; line-height: 1.8;">
+            We believe books shouldn't gather dust. Pustakam connects stories with new readers, making knowledge
+            sustainable and accessible to all.
+        </p>
+    </div>
+
+    <div class="about-grid mb-5">
+        <div class="about-card glass p-4 hover-float animate-fade-up">
+            <div class="icon-box mb-3 bg-soft-success text-success">
+                <i class="fas fa-leaf" style="font-size: 2rem;"></i>
+            </div>
+            <h3>Sustainability</h3>
+            <p class="text-light">Every reused book saves paper, water, and energy. We're building a greener planet, one
+                page at a time.</p>
+        </div>
+        <div class="about-card glass p-4 hover-float animate-fade-up">
+            <div class="icon-box mb-3 bg-soft-primary text-primary">
+                <i class="fas fa-graduation-cap" style="font-size: 2rem;"></i>
+            </div>
+            <h3>Affordability</h3>
+            <p class="text-light">We believe knowledge shouldn't drain your wallet. Access premium books and notes at a
+                fraction of the cost.</p>
+        </div>
+        <div class="about-card glass p-4 hover-float animate-fade-up">
+            <div class="icon-box mb-3 bg-soft-warning text-warning">
+                <i class="fas fa-users" style="font-size: 2rem;"></i>
+            </div>
+            <h3>Community</h3>
+            <p class="text-light">Join a vibrant community of readers, students, and educators sharing wisdom and
+                resources.</p>
+        </div>
+    </div>
+
+    <!-- Story Section with Parallax-like feel -->
+    <div class="story-section glass p-5 rounded animate-fade-up position-relative overflow-hidden mb-5">
+        <!-- Abstract Bg -->
+        <div
+            style="position: absolute; top: -50px; right: -50px; width: 300px; height: 300px; background: rgba(15, 23, 42, 0.03); border-radius: 50%;">
+        </div>
+
+        <div class="d-flex align-items-center flex-wrap gap-5">
+            <div class="flex-grow-1" style="min-width: 300px;">
+                <span class="badge bg-soft-accent text-accent mb-3">Our Mission</span>
+                <h2 class="mb-4">Bridging the Gap</h2>
+                <p class="text-light mb-4" style="font-size: 1.1rem;">
+                    It started with a simple observation: shelves full of unread books in one home, and students
+                    searching for affordable resources in another.
+                </p>
+                <p class="text-light" style="font-size: 1.1rem;">
+                    Pustakam connects these dots. Whether you're a college student looking for semester notes or a
+                    fiction lover hunting for a classic, we've got you covered.
+                </p>
+                <a href="{% url 'upload_book' %}" class="btn btn-primary mt-4">Join the Movement</a>
+            </div>
+            <div class="flex-grow-1 text-center" style="min-width: 300px;">
+                <i class="fas fa-book-reader"
+                    style="font-size: 12rem; color: #f1f5f9; text-shadow: 0 4px 10px rgba(0,0,0,0.1);"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row d-flex justify-content-between text-center animate-fade-up"
+        style="gap: 2rem; flex-wrap: wrap;">
+        <div class="stat-item glass p-4 flex-grow-1">
+            <h2 class="display-4 fw-bold text-primary mb-0">5K+</h2>
+            <p class="text-light">Books Reused</p>
+        </div>
+        <div class="stat-item glass p-4 flex-grow-1">
+            <h2 class="display-4 fw-bold text-accent mb-0">2K+</h2>
+            <p class="text-light">Happy Readers</p>
+        </div>
+        <div class="stat-item glass p-4 flex-grow-1">
+            <h2 class="display-4 fw-bold text-success mb-0">10K+</h2>
+            <p class="text-light">Trees Saved</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .about-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .icon-box {
+        width: 70px;
+        height: 70px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bg-soft-primary {
+        background: #e0f2fe;
+        color: var(--primary-color);
+    }
+
+    .bg-soft-success {
+        background: #dcfce7;
+        color: var(--success);
+    }
+
+    .bg-soft-warning {
+        background: #fef9c3;
+        color: var(--accent-color);
+    }
+
+    .bg-soft-accent {
+        background: rgba(245, 158, 11, 0.1);
+    }
+
+    .text-accent {
+        color: var(--accent-color);
+    }
+
+    .text-success {
+        color: var(--success);
+    }
+
+    .rounded {
+        border-radius: 20px;
+    }
+
+    .gap-5 {
+        gap: 3rem;
+    }
+</style>
+{% endblock %}

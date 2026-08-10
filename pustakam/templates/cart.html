@@ -1,0 +1,128 @@
+{% extends 'books/base.html' %}
+{% load static %}
+
+{% block title %}Shopping Cart | Pustakam{% endblock %}
+
+{% block content %}
+<div class="container section-padding">
+    <h1 class="page-title">Your Cart</h1>
+
+    {% if cart and cart.items.exists %}
+    <div class="cart-grid">
+        <!-- Cart Items -->
+        <div class="cart-items">
+            {% for item in cart.items.all %}
+            <div class="cart-item">
+                <div class="item-image">
+                    {% if item.book.image %}
+                    <img src="{{ item.book.image.url }}" alt="{{ item.book.title }}">
+                    {% else %}
+                    <img src="https://via.placeholder.com/100x150" alt="No Image">
+                    {% endif %}
+                </div>
+                <div class="item-details">
+                    <h3><a href="{% url 'book_detail' item.book.pk %}">{{ item.book.title }}</a></h3>
+                    <p class="author">{{ item.book.author }}</p>
+                    <p class="price">₹{{ item.book.price }}</p>
+                </div>
+                <div class="item-actions">
+                    <span class="quantity">Msg: 1</span>
+                    <a href="{% url 'remove_from_cart' item.id %}" class="text-danger"><i class="fas fa-trash"></i>
+                        Remove</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Summary -->
+        <div class="cart-summary">
+            <h3>Summary</h3>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span>₹{{ cart.total_price }}</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span>₹{{ cart.total_price }}</span>
+            </div>
+            <a href="{% url 'checkout' %}" class="btn btn-primary btn-block">Proceed to Checkout</a>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-cart text-center">
+        <i class="fas fa-shopping-cart fa-4x text-light mb-3"></i>
+        <p>Your cart is empty.</p>
+        <a href="{% url 'home' %}" class="btn btn-primary mt-3">Start Shopping</a>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    /* Quick Cart Styles - Move to css/cart.css if stricter */
+    .cart-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+    }
+
+    .cart-item {
+        display: flex;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        background: #fff;
+        margin-bottom: 1rem;
+        border-radius: 20px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid #e2e8f0;
+    }
+
+    .item-image img {
+        width: 80px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .item-details h3 {
+        font-family: var(--font-main);
+        font-size: 1.1rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .cart-summary {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: var(--shadow-sm);
+        height: fit-content;
+        border: 1px solid #e2e8f0;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+    }
+
+    .total {
+        font-weight: 800;
+        font-size: 1.25rem;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 1rem;
+        color: var(--primary-color);
+    }
+
+    .text-danger {
+        color: var(--danger);
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    @media(max-width: 768px) {
+        .cart-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

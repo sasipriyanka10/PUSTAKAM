@@ -1,0 +1,128 @@
+{% extends 'books/base.html' %}
+{% load static %}
+
+{% block title %}Home | Pustakam{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'books/css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container hero-container">
+        <div class="hero-content">
+            <h1 class="fade-in">Discover Worlds in <span class="highlight">Reused Books</span></h1>
+            <p class="fade-in-delay">Buy and sell pre-loved books at affordable prices. Sustainable reading starts here.
+            </p>
+            <div class="hero-buttons fade-in-delay-2">
+                <a href="#featured" class="btn btn-primary btn-lg">Shop Now</a>
+                <a href="{% url 'upload_book' %}" class="btn btn-outline btn-lg">Sell Books</a>
+            </div>
+        </div>
+        <div class="hero-image fade-in-right">
+            <!-- Use a placeholder or relevant image -->
+            <img src="{% static 'books/images/hero-book.svg' %}" alt="Flying Books"
+                onerror="this.src='https://via.placeholder.com/500x400?text=Pustakam'">
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="categories section-padding">
+    <div class="container">
+        <h2 class="section-title">Explore Categories</h2>
+        <div class="category-grid">
+            {% for category in categories %}
+            <a href="{% url 'category_books' category.pk %}" class="category-card hover-lift">
+                <div class="category-icon">
+                    {% if category.image %}
+                    <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                    {% else %}
+                    <i class="fas fa-book"></i>
+                    {% endif %}
+                </div>
+                <h3>{{ category.name }}</h3>
+            </a>
+            {% empty %}
+            <p>No categories found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Books / Search Results -->
+<section id="featured" class="featured section-padding bg-light">
+    <div class="container">
+        {% if search_mode %}
+        <h2 class="section-title">Search Results for "{{ search_query }}"</h2>
+        {% else %}
+        <h2 class="section-title">Featured Books</h2>
+        {% endif %}
+        <div class="book-grid">
+            {% for book in featured_books %}
+            <div class="book-card hover-lift">
+                <div class="book-image">
+                    {% if book.image %}
+                    <img src="{{ book.image.url }}" alt="{{ book.title }}">
+                    {% else %}
+                    <img src="https://via.placeholder.com/200x300?text=No+Image" alt="No Image">
+                    {% endif %}
+                    <div class="book-overlay">
+                        <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-light">View</a>
+                    </div>
+                </div>
+                <div class="book-info">
+                    <h3>{{ book.title }}</h3>
+                    <p class="author">{{ book.author }}</p>
+                    <div class="book-meta">
+                        <span class="price">₹{{ book.price }}</span>
+                        <span class="condition badge-{{ book.condition|lower }}">{{ book.condition }}</span>
+                    </div>
+                    <form action="{% url 'add_to_cart' book.id %}" method="get">
+                        <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-cart-plus"></i> Add to
+                            Cart</button>
+                    </form>
+                </div>
+            </div>
+            {% empty %}
+            <p>No featured books yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Recent Books -->
+{% if not search_mode %}
+<section class="recent section-padding">
+    <div class="container">
+        <h2 class="section-title">Fresh Arrivals</h2>
+        <div class="book-grid">
+            {% for book in recent_books %}
+            <!-- Reuse book card style or include snippet -->
+            <div class="book-card hover-lift">
+                <div class="book-image">
+                    {% if book.image %}
+                    <img src="{{ book.image.url }}" alt="{{ book.title }}">
+                    {% else %}
+                    <img src="https://via.placeholder.com/200x300?text=No+Image" alt="No Image">
+                    {% endif %}
+                </div>
+                <div class="book-info">
+                    <a href="{% url 'book_detail' book.pk %}">
+                        <h3>{{ book.title }}</h3>
+                    </a>
+                    <p class="author">{{ book.author }}</p>
+                    <div class="price-row">
+                        <span class="price">₹{{ book.price }}</span>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No books available.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

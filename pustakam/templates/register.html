@@ -1,0 +1,40 @@
+{% extends 'books/base.html' %}
+{% load static %}
+
+{% block title %}Register | Pustakam{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'books/css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>Create Account</h2>
+        <p class="auth-subtitle">Join the community of readers</p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                <small class="help-text">{{ field.help_text|safe }}</small>
+                {% endif %}
+                {% if field.errors %}
+                <div class="error-msg">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+        </form>
+
+        <p class="auth-footer">
+            Already have an account? <a href="{% url 'login' %}">Login</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

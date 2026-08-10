@@ -1,0 +1,170 @@
+{% extends 'books/base.html' %}
+{% load static %}
+
+{% block title %}Sell a Book | Pustakam{% endblock %}
+
+{% block content %}
+<div class="container section-padding">
+    <div class="sell-hero text-center mb-5 animate-fade-up">
+        <h1 class="page-title display-4">Turn Pages into <span class="text-gradient">Profit</span></h1>
+        <p class="text-light" style="font-size: 1.25rem;">Give your books a second life. List them in seconds.</p>
+    </div>
+
+    <div class="glass-container d-flex shadow-lg animate-fade-up"
+        style="border-radius: 20px; overflow: hidden; min-height: 700px; background: var(--white);">
+
+        <!-- Left Side: Visual & Tips -->
+        <div class="sell-visual p-5 text-white position-relative"
+            style="flex: 1; background: linear-gradient(135deg, var(--primary-color), #0f0c29); display: flex; flex-direction: column; justify-content: center; overflow: hidden;">
+            <!-- Decorative Circles -->
+            <div class="circle-decor"
+                style="position: absolute; top: -10%; left: -10%; width: 300px; height: 300px; background: var(--accent-color); border-radius: 50%; filter: blur(80px); opacity: 0.2;">
+            </div>
+            <div class="circle-decor"
+                style="position: absolute; bottom: -10%; right: -10%; width: 200px; height: 200px; background: #4f46e5; border-radius: 50%; filter: blur(60px); opacity: 0.3;">
+            </div>
+
+            <div class="content-wrapper z-10" style="z-index: 10;">
+                <h2 class="mb-4" style="font-weight: 800; font-size: 2.5rem;">Seller's Guide</h2>
+                <div class="tip-card glass p-3 mb-3 animate-fade-up"
+                    style="background: rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 1rem;">
+                    <i class="fas fa-camera text-warning mb-2" style="font-size: 1.5rem;"></i>
+                    <h4 style="margin-bottom: 0.5rem;">Snap It</h4>
+                    <p style="font-size: 0.9rem; opacity: 0.9;">Take clear, bright photos. The cover is your first
+                        impression.</p>
+                </div>
+                <div class="tip-card glass p-3 mb-3 animate-fade-up"
+                    style="background: rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 1rem;">
+                    <i class="fas fa-tag text-warning mb-2" style="font-size: 1.5rem;"></i>
+                    <h4 style="margin-bottom: 0.5rem;">Price It</h4>
+                    <p style="font-size: 0.9rem; opacity: 0.9;">Check similar books. Fair prices sell faster.</p>
+                </div>
+                <div class="tip-card glass p-3 animate-fade-up"
+                    style="background: rgba(255,255,255,0.1); border-radius: 12px;">
+                    <i class="fas fa-box-open text-warning mb-2" style="font-size: 1.5rem;"></i>
+                    <h4 style="margin-bottom: 0.5rem;">Ship It</h4>
+                    <p style="font-size: 0.9rem; opacity: 0.9;">Pack securely. Happy readers leave 5 stars.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Form -->
+        <div class="sell-form p-5" style="flex: 1.5; background: #fff;">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="alert alert-error mb-4 fade-in">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                <div class="form-section mb-4 animate-fade-up">
+                    <h3 class="mb-3 text-secondary" style="border-bottom: 2px solid #f1f5f9; padding-bottom: 0.5rem;">
+                        Book Details</h3>
+                    <div class="grid-2">
+                        <div class="form-floating mb-3">
+                            <label class="form-label fw-bold small text-muted">Title</label>
+                            {{ form.title }}
+                        </div>
+                        <div class="form-floating mb-3">
+                            <label class="form-label fw-bold small text-muted">Author</label>
+                            {{ form.author }}
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label class="form-label fw-bold small text-muted">Description</label>
+                        {{ form.description }}
+                    </div>
+                </div>
+
+                <div class="form-section mb-4 animate-fade-up">
+                    <h3 class="mb-3 text-secondary" style="border-bottom: 2px solid #f1f5f9; padding-bottom: 0.5rem;">
+                        Listing Info</h3>
+                    <div class="grid-2">
+                        <div class="form-floating mb-3">
+                            <label class="form-label fw-bold small text-muted">Price (₹)</label>
+                            {{ form.price }}
+                        </div>
+                        <div class="form-floating mb-3">
+                            <label class="form-label fw-bold small text-muted">Category</label>
+                            {{ form.category }}
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-floating mb-3">
+                            <label class="form-label fw-bold small text-muted">Condition</label>
+                            {{ form.condition }}
+                        </div>
+                        <div class="form-floating mb-3">
+                            <label class="form-label fw-bold small text-muted">Cover Image</label>
+                            {{ form.image }}
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg w-100 animate-fade-up">
+                    <i class="fas fa-paper-plane"></i> Publish Listing
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .glass-container {
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    /* Custom Input Styling Overrides */
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea,
+    input[type="file"] {
+        width: 100%;
+        padding: 1rem;
+        border: 2px solid #f1f5f9;
+        border-radius: 12px;
+        background: #f8fafc;
+        transition: all 0.3s ease;
+        font-family: var(--font-main);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        border-color: var(--primary-color);
+        background: #fff;
+        box-shadow: 0 10px 20px -5px rgba(15, 23, 42, 0.1);
+        transform: translateY(-2px);
+        outline: none;
+    }
+
+    label.form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+    }
+
+    @media(max-width: 992px) {
+        .glass-container {
+            flex-direction: column;
+        }
+
+        .sell-visual {
+            padding: 3rem !important;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
